@@ -1,10 +1,8 @@
 package ee.andrusj.timecalendar.data.database
 
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import java.util.*
 
-@ProvidedTypeConverter
 class RoomConverters {
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
@@ -13,7 +11,7 @@ class RoomConverters {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+        return date?.time
     }
 
     companion object {

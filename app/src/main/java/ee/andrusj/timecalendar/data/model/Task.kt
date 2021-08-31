@@ -8,18 +8,18 @@ import ee.andrusj.timecalendar.data.database.RoomConverters
 import java.util.*
 
 @Entity
-data class ScheduleBlock(
+data class Task(
     @PrimaryKey
     val id: Int,
 
     @ColumnInfo(name = "block_name")
-    val blockName: String,
+    val name: String,
 
     @ColumnInfo(name = "block_start")
     @TypeConverters(RoomConverters::class)
-    val blockStart: Date,
+    val start: Date,
 
     @ColumnInfo(name = "block_end")
     @TypeConverters(RoomConverters::class)
-    val blockEnd: Date
+    val end: Date
 )

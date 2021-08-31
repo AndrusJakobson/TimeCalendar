@@ -5,32 +5,36 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ee.andrusj.timecalendar.data.model.ScheduleBlock
+import ee.andrusj.timecalendar.data.model.Task
 
 @Database(
     entities = [
-        ScheduleBlock::class
+        Task::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun scheduleBlockDao(): ScheduleBlockDao
+    abstract fun TaskDao(): TaskDao
 
     companion object {
-        val DATABASE_NAME = "timecalendar"
-        private lateinit var instance: AppDatabase
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase {
-            if (!this::instance.isInitialized) {
-                instance = Room.databaseBuilder(
+        fun getDatabase(context: Context): AppDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    DATABASE_NAME
-                ).addTypeConverter(RoomConverters.instance).build()
+                    "timecalendar"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
+                INSTANCE = instance
+                instance
             }
-
-            return instance;
         }
     }
 }

@@ -2,50 +2,55 @@ package ee.andrusj.timecalendar.ui.main.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Toast
+import android.widget.ProgressBar
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ee.andrusj.timecalendar.R
-import ee.andrusj.timecalendar.data.api.ApiHelper
-import ee.andrusj.timecalendar.data.api.ApiServiceImpl
-import ee.andrusj.timecalendar.data.database.AppDatabase
-import ee.andrusj.timecalendar.data.model.ScheduleBlock
-import ee.andrusj.timecalendar.ui.base.ViewModelFactory
+import ee.andrusj.timecalendar.data.database.DatabaseApplication
+import ee.andrusj.timecalendar.data.model.Task
+import ee.andrusj.timecalendar.data.repository.TaskRepository
 import ee.andrusj.timecalendar.ui.main.adapter.MainAdapter
 import ee.andrusj.timecalendar.ui.main.viewmodel.MainViewModel
-import ee.andrusj.timecalendar.utils.Status
-import kotlinx.android.synthetic.main.activity_main.*
+import ee.andrusj.timecalendar.ui.main.viewmodel.MainViewModelFactory
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: MainAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModelFactory((application as DatabaseApplication).taskRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupUI()
-        setupViewModel()
-        setupObserver()
+        recyclerView = findViewById(R.id.recyclerView)
+        progressBar = findViewById(R.id.progressBar)
 
-        AppDatabase.getInstance(this).scheduleBlockDao().insertBlocks(
-            ScheduleBlock(
-                1,
-                "name",
+        setupUI()
+
+        viewModel.insert(
+            Task(
+                2,
+                "No fucking way is it actually working.",
                 Date(1220227200L * 1000),
                 Date(1220227200L * 1000)
             )
         );
 
-        val stuffs: List<ScheduleBlock> = AppDatabase.getInstance(this).scheduleBlockDao().getAll()
-        for (stuff in stuffs) {
-            Log.d("YEMEN", stuff.blockName)
-        }
+        Log.d("YEMEN", "Test, is it actually working?")
+        viewModel.allTasks.observe(this, androidx.lifecycle.Observer {
+            for (task in it) {
+                Log.d("YEMEN", task.name)
+
+            }
+        })
     }
 
     private fun setupUI() {
@@ -58,33 +63,5 @@ class MainActivity : AppCompatActivity() {
             )
         )
         recyclerView.adapter = adapter
-    }
-
-    private fun setupObserver() {
-        mainViewModel.getUsers().observe(this, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    progressBar.visibility = View.GONE
-                    it.data?.let { scheduleBlocks -> adapter.addData(scheduleBlocks) }
-                    recyclerView.visibility = View.VISIBLE
-                }
-                Status.LOADING -> {
-                    progressBar.visibility = View.VISIBLE
-                    recyclerView.visibility = View.GONE
-                }
-                Status.ERROR -> {
-                    //Handle Error
-                    progressBar.visibility = View.GONE
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                }
-            }
-        })
-    }
-
-    private fun setupViewModel() {
-        mainViewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory(ApiHelper(ApiServiceImpl()))
-        ).get(MainViewModel::class.java)
     }
 }

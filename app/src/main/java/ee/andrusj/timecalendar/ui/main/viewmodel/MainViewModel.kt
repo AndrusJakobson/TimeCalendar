@@ -1,46 +1,26 @@
 package ee.andrusj.timecalendar.ui.main.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import ee.andrusj.timecalendar.data.model.ScheduleBlock
-import ee.andrusj.timecalendar.data.repository.MainRepository
-import ee.andrusj.timecalendar.utils.Resource
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import android.util.Log
+import androidx.lifecycle.*
+import ee.andrusj.timecalendar.data.model.Task
+import ee.andrusj.timecalendar.data.repository.TaskRepository
+import kotlinx.coroutines.launch
 
-class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel(private val repository: TaskRepository) : ViewModel() {
+    val allTasks: LiveData<List<Task>> = repository.allTasks.asLiveData()
 
-    private val users = MutableLiveData<Resource<List<ScheduleBlock>>>()
-    private val compositeDisposable = CompositeDisposable()
-
-    init {
-        fetchUsers()
+    fun insert(task: Task) = viewModelScope.launch {
+        Log.d("YEMEN", "Something is being inserted")
+        repository.insert(task)
     }
+}
 
-    private fun fetchUsers() {
-        users.postValue(Resource.loading(null))
-
-        compositeDisposable.add(
-            mainRepository.getUsers()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ userList ->
-                    users.postValue(Resource.success(userList))
-                }, { throwable ->
-                    users.postValue(Resource.error("Something Went Wrong", null))
-                })
-        )
+class MainViewModelFactory(private val repository: TaskRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MainViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
-
-    fun getUsers(): LiveData<Resource<List<ScheduleBlock>>> {
-        return users
-    }
-
 }
