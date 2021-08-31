@@ -4,22 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ee.andrusj.timecalendar.R
-import ee.andrusj.timecalendar.data.model.User
+import ee.andrusj.timecalendar.data.model.ScheduleBlock
 import kotlinx.android.synthetic.main.item_layout.view.*
 
 class MainAdapter(
-    private val users: ArrayList<User>
+    private val scheduleBlocks: ArrayList<ScheduleBlock>
 ) : RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(user: User) {
-            itemView.textViewUserName.text = user.name
-            itemView.textViewUserEmail.text = user.email
-            Glide.with(itemView.imageViewAvatar.context)
-                .load(user.avatar)
-                .into(itemView.imageViewAvatar)
+        fun bind(scheduleBlock: ScheduleBlock) {
+            itemView.textViewBlockName.text = scheduleBlock.blockName
+            itemView.textViewBlockStart.text = scheduleBlock.blockStart.toString()
+            itemView.textViewBlockEnd.text = scheduleBlock.blockEnd.toString()
+
+//            Glide.with(itemView.imageViewAvatar.context)
+//                .load(scheduleBlock.avatar)
+//                .into(itemView.imageViewAvatar)
         }
     }
 
@@ -31,13 +32,17 @@ class MainAdapter(
             )
         )
 
-    override fun getItemCount(): Int = users.size
+    override fun getItemCount(): Int = scheduleBlocks.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(users[position])
+        holder.bind(scheduleBlocks[position])
 
-    fun addData(list: List<User>) {
-        users.addAll(list)
+    fun addData(list: List<ScheduleBlock>) {
+        val lastIndex = scheduleBlocks.lastIndex
+        scheduleBlocks.addAll(list)
+        for (i in lastIndex..scheduleBlocks.size) {
+            notifyItemInserted(i)
+        }
     }
 
 }

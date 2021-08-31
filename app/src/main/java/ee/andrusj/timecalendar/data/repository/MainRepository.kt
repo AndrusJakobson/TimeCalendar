@@ -1,12 +1,12 @@
 package ee.andrusj.timecalendar.data.repository
 
 import ee.andrusj.timecalendar.data.api.ApiHelper
-import ee.andrusj.timecalendar.data.model.User
+import ee.andrusj.timecalendar.data.model.ScheduleBlock
 import io.reactivex.Single
 
 class MainRepository(private val apiHelper: ApiHelper) {
 
-    fun getUsers(): Single<List<User>> {
+    fun getUsers(): Single<List<ScheduleBlock>> {
         return apiHelper.getUsers()
     }
 

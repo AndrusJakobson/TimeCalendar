@@ -3,7 +3,7 @@ package ee.andrusj.timecalendar.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ee.andrusj.timecalendar.data.model.User
+import ee.andrusj.timecalendar.data.model.ScheduleBlock
 import ee.andrusj.timecalendar.data.repository.MainRepository
 import ee.andrusj.timecalendar.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
-    private val users = MutableLiveData<Resource<List<User>>>()
+    private val users = MutableLiveData<Resource<List<ScheduleBlock>>>()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -38,7 +38,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         compositeDisposable.dispose()
     }
 
-    fun getUsers(): LiveData<Resource<List<User>>> {
+    fun getUsers(): LiveData<Resource<List<ScheduleBlock>>> {
         return users
     }
 

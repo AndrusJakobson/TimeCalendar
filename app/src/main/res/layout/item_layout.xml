@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textViewUserName"
+        android:id="@+id/textViewBlockName"
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,12 +29,19 @@
         tools:text="MindOrks" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textViewUserEmail"
+        android:id="@+id/textViewBlockStart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textViewUserName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
-        tools:text="MindOrks" />
+        app:layout_constraintStart_toStartOf="@+id/textViewBlockName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBlockName" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewBlockEnd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textViewBlockStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBlockStart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

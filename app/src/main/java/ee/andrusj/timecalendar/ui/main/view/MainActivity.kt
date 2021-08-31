@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ee.andrusj.timecalendar.R
 import ee.andrusj.timecalendar.data.api.ApiHelper
 import ee.andrusj.timecalendar.data.api.ApiServiceImpl
-import ee.andrusj.timecalendar.data.model.User
+import ee.andrusj.timecalendar.data.model.ScheduleBlock
 import ee.andrusj.timecalendar.ui.base.ViewModelFactory
 import ee.andrusj.timecalendar.ui.main.adapter.MainAdapter
 import ee.andrusj.timecalendar.ui.main.viewmodel.MainViewModel
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressBar.visibility = View.GONE
-                    it.data?.let { users -> renderList(users) }
+                    it.data?.let { scheduleBlocks -> adapter.addData(scheduleBlocks) }
                     recyclerView.visibility = View.VISIBLE
                 }
                 Status.LOADING -> {
@@ -62,11 +62,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    private fun renderList(users: List<User>) {
-        adapter.addData(users)
-        adapter.notifyDataSetChanged()
     }
 
     private fun setupViewModel() {
