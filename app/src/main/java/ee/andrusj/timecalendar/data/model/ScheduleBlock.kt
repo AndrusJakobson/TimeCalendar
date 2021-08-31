@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import ee.andrusj.timecalendar.utils.RoomConverters
+import ee.andrusj.timecalendar.data.database.RoomConverters
 import java.util.*
 
 @Entity

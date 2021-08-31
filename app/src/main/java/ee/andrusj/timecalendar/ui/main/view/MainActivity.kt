@@ -1,6 +1,7 @@
 package ee.andrusj.timecalendar.ui.main.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ee.andrusj.timecalendar.R
 import ee.andrusj.timecalendar.data.api.ApiHelper
 import ee.andrusj.timecalendar.data.api.ApiServiceImpl
+import ee.andrusj.timecalendar.data.database.AppDatabase
 import ee.andrusj.timecalendar.data.model.ScheduleBlock
 import ee.andrusj.timecalendar.ui.base.ViewModelFactory
 import ee.andrusj.timecalendar.ui.main.adapter.MainAdapter
 import ee.andrusj.timecalendar.ui.main.viewmodel.MainViewModel
 import ee.andrusj.timecalendar.utils.Status
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +32,20 @@ class MainActivity : AppCompatActivity() {
         setupUI()
         setupViewModel()
         setupObserver()
+
+        AppDatabase.getInstance(this).scheduleBlockDao().insertBlocks(
+            ScheduleBlock(
+                1,
+                "name",
+                Date(1220227200L * 1000),
+                Date(1220227200L * 1000)
+            )
+        );
+
+        val stuffs: List<ScheduleBlock> = AppDatabase.getInstance(this).scheduleBlockDao().getAll()
+        for (stuff in stuffs) {
+            Log.d("YEMEN", stuff.blockName)
+        }
     }
 
     private fun setupUI() {

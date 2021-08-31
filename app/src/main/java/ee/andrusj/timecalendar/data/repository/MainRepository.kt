@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 class MainRepository(private val apiHelper: ApiHelper) {
 
-    fun getUsers(): Single<List<ScheduleBlock>> {
+    suspend fun getUsers(): Single<List<ScheduleBlock>> {
         return apiHelper.getUsers()
     }
 

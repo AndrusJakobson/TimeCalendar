@@ -21,6 +21,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     private fun fetchUsers() {
         users.postValue(Resource.loading(null))
+
         compositeDisposable.add(
             mainRepository.getUsers()
                 .subscribeOn(Schedulers.io())
