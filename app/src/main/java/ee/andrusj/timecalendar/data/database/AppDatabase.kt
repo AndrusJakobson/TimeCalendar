@@ -11,7 +11,7 @@ import ee.andrusj.timecalendar.data.model.Task
     entities = [
         Task::class
     ],
-    version = 2
+    version = 3
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {

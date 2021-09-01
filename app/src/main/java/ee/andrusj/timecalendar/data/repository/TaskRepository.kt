@@ -1,6 +1,5 @@
 package ee.andrusj.timecalendar.data.repository
 
-import android.util.Log
 import androidx.annotation.WorkerThread
 import ee.andrusj.timecalendar.data.database.TaskDao
 import ee.andrusj.timecalendar.data.model.Task
@@ -11,7 +10,6 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     @WorkerThread
     suspend fun insert(insertable: Task) {
-        Log.d("YEMEN", "Pretty deep insert")
         taskDao.insert(insertable)
     }
 

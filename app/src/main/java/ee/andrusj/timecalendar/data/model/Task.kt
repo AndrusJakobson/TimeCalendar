@@ -9,7 +9,7 @@ import java.util.*
 
 @Entity
 data class Task(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
 
     @ColumnInfo(name = "block_name")

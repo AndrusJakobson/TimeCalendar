@@ -1,6 +1,5 @@
 package ee.andrusj.timecalendar.ui.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import ee.andrusj.timecalendar.data.model.Task
 import ee.andrusj.timecalendar.data.repository.TaskRepository
@@ -10,7 +9,6 @@ class MainViewModel(private val repository: TaskRepository) : ViewModel() {
     val allTasks: LiveData<List<Task>> = repository.allTasks.asLiveData()
 
     fun insert(task: Task) = viewModelScope.launch {
-        Log.d("YEMEN", "Something is being inserted")
         repository.insert(task)
     }
 }
