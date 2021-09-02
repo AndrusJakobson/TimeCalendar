@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,7 +19,6 @@ import ee.andrusj.timecalendar.ui.main.viewmodel.MainViewModelFactory
 class MainFragment : Fragment() {
     private lateinit var adapter: MainAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private val viewModel: MainViewModel by viewModels {
         MainViewModelFactory((activity?.application as DatabaseApplication).taskRepository)
     }
@@ -32,7 +30,6 @@ class MainFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.main_fragment, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
-        progressBar = view.findViewById(R.id.progressBar)
 
         return view
     }

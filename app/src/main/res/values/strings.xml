@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TimeCalendar</string>
+    <string name="menu_button">Menu button</string>
 </resources>
