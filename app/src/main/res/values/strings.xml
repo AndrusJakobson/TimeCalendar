@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TimeCalendar</string>
     <string name="menu_button">Menu button</string>
-    <string name="menu">menu</string>
-    <string name="close">X</string>
+    <string name="tasks">Tasks</string>
+    <string name="schedules">Schedules</string>
 </resources>
